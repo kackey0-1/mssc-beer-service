@@ -16,7 +16,6 @@ public abstract class BeerMapperDecorator implements BeerMapper {
     public void setBeerInventoryService(BeerInventoryService beerInventoryService){
         this.beerInventoryService = beerInventoryService;
     }
-
     @Autowired
     public void setMapper(BeerMapper beerMapper){
         this.beerMapper = beerMapper;
@@ -24,14 +23,14 @@ public abstract class BeerMapperDecorator implements BeerMapper {
 
     @Override
     public BeerDto beerToBeerDto(Beer beer) {
-        BeerDto dto = beerMapper.beerToBeerDto(beer);
-        dto.setQuantityOnHand(beerInventoryService.getOnhandInventory(beer.getId()));
-        return dto;
+        return beerMapper.beerToBeerDto(beer);
     }
 
     @Override
-    public BeerDto beerToBeerDtoWithoutOnHand(Beer beer) {
-        return beerMapper.beerToBeerDto(beer);
+    public BeerDto beerToBeerDtoWithOnHand(Beer beer) {
+        BeerDto dto = beerMapper.beerToBeerDto(beer);
+        dto.setQuantityOnHand(beerInventoryService.getOnhandInventory(beer.getId()));
+        return dto;
     }
 
     @Override
